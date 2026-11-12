@@ -1,0 +1,36 @@
+node_modules/
+dist/
+public/transport/*.wasm*
+public/transport/wasm_exec*.js
+playwright-report/
+test-results/
+.impeccable/review/
+*.tsbuildinfo
+transport/.build/
+.wrangler/
+
+# This static app needs no secrets. Keep local credentials out of commits.
+.env
+.env.*
+.dev.vars
+.dev.vars.*
+.npmrc
+.netrc
+*.pem
+*.key
+*.p12
+*.pfx
+*.private.json
+.ssh/
+.aws/
+.config/gcloud/
+
+# Local tools, reports, and editor state can contain paths or invitations.
+.codex/
+.impeccable/config.local.json
+.idea/
+.vscode/
+.DS_Store
+Thumbs.db
+*.log
+coverage/

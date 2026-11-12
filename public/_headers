@@ -1,0 +1,10 @@
+/*
+  X-Content-Type-Options: nosniff
+  Referrer-Policy: no-referrer
+  X-Frame-Options: DENY
+  Permissions-Policy: camera=(), microphone=(), geolocation=(), payment=(), usb=()
+  Content-Security-Policy: default-src 'self'; script-src 'self' 'wasm-unsafe-eval'; style-src 'self'; font-src 'self'; img-src 'self' data: blob:; connect-src 'self' https://tailcat.dev https://tc301a.ipn.dev https://tc302a.ipn.dev https://tc303a.ipn.dev https://tc304a.ipn.dev wss://tc301a.ipn.dev wss://tc302a.ipn.dev wss://tc303a.ipn.dev wss://tc304a.ipn.dev; object-src 'none'; base-uri 'none'; form-action 'none'; frame-ancestors 'none'; worker-src 'self'
+/transport/tailcat-*
+  Cache-Control: public, max-age=31536000, immutable
+/transport/wasm_exec-*
+  Cache-Control: public, max-age=31536000, immutable

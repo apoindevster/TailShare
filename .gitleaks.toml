@@ -1,0 +1,30 @@
+title = "TailShare publication checks"
+
+[extend]
+useDefault = true
+
+[[rules]]
+id = "tailshare-invitation"
+description = "Literal TailShare invitation credentials"
+regex = '''share=tc[a-zA-Z0-9_-]{20,}&key=[a-f0-9]{64}'''
+keywords = ["share=tc"]
+
+[[rules]]
+id = "tailcat-address"
+description = "Literal Tailcat address containing connection credentials"
+regex = '''\btc[a-zA-Z0-9_-]{80,}\b'''
+keywords = ["tc"]
+
+[[rules]]
+id = "tailcat-private-key"
+description = "Tailcat/Tailscale persisted private node key"
+regex = '''privkey:[a-f0-9]{64}'''
+keywords = ["privkey:"]
+
+[[rules]]
+id = "local-user-path"
+description = "Personal home directory path in source or generated assets"
+# Capture the username so the default allowlist for whole Unix paths does not
+# suppress this privacy rule.
+regex = '''(?:/(?:home|Users)/|[A-Za-z]:\\Users\\)([^/\\\r\n"'<>]+)[/\\]'''
+secretGroup = 1
