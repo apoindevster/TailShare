@@ -1,6 +1,12 @@
 # TailShare
 
-A static file browser and sharing application for browser-to-browser and browser/CLI transfers, built with React, TypeScript, and [Tailcat](https://github.com/tailscale/tailcat) compiled to Go WebAssembly. Inspired by [Tailcatchat](https://github.com/tailscale/tailcatchat). No TailShare backend, account, database, or hosted file storage.
+Encrypted file sharing between browsers and the Tailcat CLI, with directory browsing and downloads as separate files or ZIP. No account, application backend, or hosted file storage.
+
+**[Open TailShare in your browser](https://apoindevster.github.io/TailShare/)** — use the live app on GitHub Pages without installing anything.
+
+[![TailShare's neon desktop interface, with file and folder selection, browser or CLI destination, and share expiry controls.](docs/images/tailshare.png)](https://apoindevster.github.io/TailShare/)
+
+TailShare is a static web application built with React, TypeScript, and [Tailcat](https://github.com/tailscale/tailcat) compiled to Go WebAssembly. Inspired by [Tailcatchat](https://github.com/tailscale/tailcatchat).
 
 Browser Tailcat currently carries encrypted traffic through public DERP relays. “No backend” does **not** mean no network infrastructure: the static host serves the app and WASM, `tailcat.dev` supplies the relay map, and DERP carries end-to-end encrypted streams. Both endpoints must remain online and awake: two browsers, or a browser and a sender running `tailcat serve files` or recipient running `tailcat recv`.
 
