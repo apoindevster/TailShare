@@ -27,6 +27,49 @@ test("static project subpath loads the UI and real WASM without a backend", asyn
   await expect(
     page.getByRole("heading", { name: "Your files. Their browser." }),
   ).toBeVisible();
+  const shortcut = await page.evaluate(async () => {
+    const manifestURL = document.querySelector<HTMLLinkElement>(
+      'link[rel="manifest"]',
+    )!.href;
+    const manifest = await (await fetch(manifestURL)).json();
+    const appleIcon = document.querySelector<HTMLLinkElement>(
+      'link[rel="apple-touch-icon"]',
+    )!.href;
+    const urls = [
+      appleIcon,
+      ...manifest.icons.map(
+        (icon: { src: string }) => new URL(icon.src, manifestURL).href,
+      ),
+    ];
+    const dimensions = await Promise.all(
+      urls.map(
+        (url) =>
+          new Promise<number[]>((resolve, reject) => {
+            const image = new Image();
+            image.onload = () =>
+              resolve([image.naturalWidth, image.naturalHeight]);
+            image.onerror = () =>
+              reject(new Error(`Home-screen icon failed to load: ${url}`));
+            image.src = url;
+          }),
+      ),
+    );
+    return {
+      startURL: new URL(manifest.start_url, manifestURL).href,
+      display: manifest.display,
+      dimensions,
+    };
+  });
+  expect(shortcut).toEqual({
+    startURL: origin + prefix,
+    display: "browser",
+    dimensions: [
+      [180, 180],
+      [192, 192],
+      [512, 512],
+      [512, 512],
+    ],
+  });
   await page
     .getByLabel("Choose files to share", { exact: true })
     .setInputFiles({

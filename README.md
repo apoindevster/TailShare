@@ -39,6 +39,16 @@ Deploy only `dist/` to any HTTPS static host. A local development/preview HTTP s
 
 Every browser-hosted session uses fresh Tailcat keys and an additional random 256-bit application capability. Links contain `#share=tc…&key=…`. A browser-hosted share requires its complete share key; a bare Tailcat address connects only to a CLI file service. The recipient removes link credentials from the address bar immediately. Refreshing ends that recipient's session; paste the link or key again to reconnect.
 
+## Add to your phone's home screen
+
+Open the [TailShare home page](https://apoindevster.github.io/TailShare/) and use your browser's **Add to Home Screen** action. On iPhone or iPad, find it in Safari's Share menu; if **Open as Web App** is offered, leave it off to open in your browser. On Android Chrome, use the browser menu's **Add to Home screen** action. The shortcut uses TailShare's neon transfer-arrow icon; the final shape follows your device's launcher.
+
+For a custom shortcut made in Apple's Shortcuts app, download the [512px icon](public/icon-512.png). Add your Open URL shortcut to the home screen, tap its icon, and select that image using **Choose File** or **Choose Photo**. See [Apple's shortcut icon instructions](https://support.apple.com/guide/shortcuts/apd735880972/ios).
+
+Save the home page, not a private share invitation. The manifest requests a normal browser launch and uses relative paths for GitHub Pages and Cloudflare Pages. This adds no offline storage or background transfers; keep the sending page open and visible. If you added a shortcut before these icons were deployed, remove and re-add it after reloading the updated site to refresh cached artwork.
+
+The PNGs are original project artwork derived from the existing transfer-arrow mark. Their editable source is [tailshare-icon.svg](docs/images/tailshare-icon.svg). To regenerate them after editing the source, run `bash scripts/generate-icons.sh` with ImageMagick installed. Normal builds and deployments use the committed PNGs and need no additional dependency.
+
 ## Receive from `tailcat serve`
 
 The recipient needs only TailShare in a supported browser. The sender installs the [Tailcat CLI](https://github.com/tailscale/tailcat/blob/main/INSTALL.md), places the files to offer in a dedicated directory, and runs:

@@ -3,6 +3,7 @@ import { execFileSync } from "node:child_process";
 import {
   mkdtemp,
   mkdir,
+  readFile,
   readdir,
   rm,
   symlink,
@@ -49,6 +50,17 @@ beforeEach(async () => {
     "assets/example-font-12345678.woff2",
   ])
     await put(name);
+  for (const name of [
+    "site.webmanifest",
+    "apple-touch-icon.png",
+    "icon-192.png",
+    "icon-512.png",
+    "icon-maskable-512.png",
+  ])
+    await put(
+      name,
+      await readFile(new URL(`../public/${name}`, import.meta.url)),
+    );
   const compressed = gzipSync(new Uint8Array([0, 97, 115, 109, 1, 0, 0, 0]));
   const version = createHash("sha256")
     .update(compressed)
@@ -65,6 +77,18 @@ afterEach(async () => {
 describe("publication boundary", () => {
   it("accepts the static site, transport, and bundled font assets", () => {
     expect(check()).toContain("approved files only");
+  });
+  it("rejects a shortcut that leaves the GitHub Pages project directory", async () => {
+    const manifest = JSON.parse(
+      await readFile(join(root, "site.webmanifest"), "utf8"),
+    );
+    manifest.start_url = "/";
+    await put("site.webmanifest", JSON.stringify(manifest));
+    expect(check).toThrow(/start_url must use the site directory/);
+  });
+  it("rejects missing home-screen artwork", async () => {
+    await rm(join(root, "apple-touch-icon.png"));
+    expect(check).toThrow(/apple-touch-icon.png/);
   });
   it("rejects mismatched runtime/WASM pairs even under approved file names", async () => {
     const name = (await readdir(join(root, "transport"))).find((name) =>

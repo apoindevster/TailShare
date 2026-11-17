@@ -9,6 +9,10 @@ FIRST VIEWPORT: Compact brand bar naming browser and CLI sharing; left-aligned t
 FORM: Brief-pinned cyberpunk transfer console. Seed 92f575eb, assigned candidate 6 interpreted as the neon communications console among grounded alternatives (arcade cabinet, BBS, cassette index, synth rack, optical-disc catalog, communications console, LAN party file manager). The pinned palette and working-file-browser task outrank catalog materials. Split-flap discipline contributes stable columns and honest state; guide-map, plate-book, reference-setting and video-feed forms lose task clarity. Signature interaction: dropping files replaces the empty bay with the navigable selection, preserving the fixed action rail.
 FINISH: unreviewed and undocumented is unfinished; this build ends with the finish review, the verdict, DESIGN.md, and every shipping raster carrying its provenance
 
+## Home-screen identity
+
+Browser shortcuts use the paired transfer-arrow mark on opaque ink navy: a cyan outgoing arrow, a magenta incoming arrow, and warm orange terminal strokes. The editable source is `docs/images/tailshare-icon.svg`; `scripts/generate-icons.sh` exports the committed PNG artwork without adding a build dependency. Apple receives a 180px touch icon; the manifest offers 192px and 512px icons plus a padded 512px maskable variant with the mark inside Android's central safe circle. Device launchers apply their own corner masks. Relative manifest paths retain the deployment directory, and `display: browser` requests a normal browser launch. No offline or background behavior is introduced.
+
 ## Paged CLI folder browsing
 
 Connecting to a `tailcat serve` file service loads only the first root page. Opening a folder requests that folder's entries; unopened descendants are not scanned for browsing. A page processes at most 128 names, with Tailcat normally returning 100. Four pages are cached, and older pages are reread from the beginning when revisited. Entries are sorted within each page. There is no total CLI directory or served-tree entry cap, and the live listing is not an immutable snapshot.

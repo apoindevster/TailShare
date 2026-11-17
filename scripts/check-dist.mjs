@@ -16,6 +16,11 @@ const publicFiles = new Set([
   ".nojekyll",
   "_headers",
   "favicon.svg",
+  "site.webmanifest",
+  "apple-touch-icon.png",
+  "icon-192.png",
+  "icon-512.png",
+  "icon-maskable-512.png",
   "THIRD_PARTY_LICENSES.txt",
   "transport/LICENSE.go",
 ]);
@@ -60,6 +65,46 @@ for (const file of [
   "THIRD_PARTY_LICENSES.txt",
 ])
   await stat(new URL(file, root));
+const manifest = JSON.parse(
+  await readFile(new URL("site.webmanifest", root), "utf8"),
+);
+for (const field of ["id", "start_url", "scope"])
+  assert.equal(
+    manifest[field],
+    "./",
+    `Manifest ${field} must use the site directory`,
+  );
+assert.equal(
+  manifest.display,
+  "browser",
+  "Home-screen shortcuts must open in the browser",
+);
+for (const [file, size, purpose] of [
+  ["apple-touch-icon.png", 180, null],
+  ["icon-192.png", 192, "any"],
+  ["icon-512.png", 512, "any"],
+  ["icon-maskable-512.png", 512, "maskable"],
+]) {
+  const png = await readFile(new URL(file, root));
+  assert.equal(
+    png.subarray(0, 8).toString("hex"),
+    "89504e470d0a1a0a",
+    `Invalid PNG: ${file}`,
+  );
+  assert.equal(png.readUInt32BE(16), size, `Incorrect icon width: ${file}`);
+  assert.equal(png.readUInt32BE(20), size, `Incorrect icon height: ${file}`);
+  if (purpose)
+    assert(
+      manifest.icons.some(
+        (icon) =>
+          icon.src === `./${file}` &&
+          icon.sizes === `${size}x${size}` &&
+          icon.type === "image/png" &&
+          icon.purpose === purpose,
+      ),
+      `Manifest must include the relative ${file} icon`,
+    );
+}
 const wasm = gunzipSync(compressed);
 assert.deepEqual(
   [...wasm.subarray(0, 8)],
@@ -98,5 +143,5 @@ async function checkDirectory(directory) {
 }
 await checkDirectory(rootPath);
 console.log(
-  "Static bundle verified: approved files only, relative assets, CSP, licenses, WASM, and Pages file-size limits.",
+  "Static bundle verified: approved files only, relative assets, home-screen icons, CSP, licenses, WASM, and Pages file-size limits.",
 );
